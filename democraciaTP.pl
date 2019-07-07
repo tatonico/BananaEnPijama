@@ -125,7 +125,7 @@ esPicante(Provincia) :-
     sePostulaEn(OtroPartido, Provincia),
     Partido \= OtroPartido.
 
-%%punto 3 suponiendo q' se quiere saber si primer candidato gana
+%%punto 3 suponiendo que se quiere saber si primer candidato gana
 
 leGanaA(Candidato, OtroCandidato, Provincia) :-
     sonDelMismoPartido(Candidato, OtroCandidato, Partido),
@@ -234,7 +234,7 @@ influencia(nuevosPuestosDeTrabajo(Cant),0):-
     Cant =< 50000.
 
 influencia(construir(Lista),Variacion):-
-    edilicio(Tipo,Cant),
+    obtenerPorcentaje(edilicio(Tipo, Cant),_),
     findall(PorcPorConstru, obtenerPorcentaje(edilicio(Tipo, Cant),PorcPorConstru), Lista),
     sumlist(Lista, Variacion).
 
@@ -250,7 +250,7 @@ obtenerPorcentaje(edilicio(jardin, Cant),PorcPorConstru):-
 obtenerPorcentaje(edilicio(escuela, Cant),PorcPorConstru):-
     obtenerJardinOEscuela(Cant, PorcPorConstru).
 
-obtenerPorcentaje(edilicio(Algo, Cant), -1):-
+obtenerPorcentaje(edilicio(Algo, _), -1):-
     Algo \= hospital,
     Algo \= universidad,
     Algo \= escuela,
@@ -263,7 +263,7 @@ obtenerJardinOEscuela(Cant, PorcPorConstru):-
 
 %punto 8
 promedioDeCrecimiento(Partido, Sumatoria):-
-    findall(Variacion, promesaDePartido(Partido, Variacion), Lista),
+    findall(Variacion, variacionDePromesasDePartido(Partido, Variacion), Lista),
     sumlist(Lista, Sumatoria).
 
 variacionDePromesasDePartido(Partido,Variacion):-

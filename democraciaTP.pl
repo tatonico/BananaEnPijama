@@ -193,7 +193,7 @@ esMasJoven(Candidato,Candidato2):-
 %punto 5
 ajusteConsultora(Partido, Provincia, Porcentaje):-
     partidoLeGanaATodosEnProvincia(Partido,Provincia),
-    intencionDeVotoEn(Provincia, Partido, Porcentaje1), Porcentaje is Porcentaje1 - 20 ).
+    intencionDeVotoEn(Provincia, Partido, Porcentaje1), Porcentaje is Porcentaje1 - 20 .
 
 ajusteConsultora(Partido, Provincia, Porcentaje):-
     intencionDeVotoEn(Provincia, Partido, PorcDelPart),
@@ -225,7 +225,7 @@ promete(rojo, inflacion(10,30)).
 %influenciaDePromesas(Promesa,Variacion)
 
 influencia(inflacion(Menor,Mayor),Variacion):-
-    Variacion is (Menor + Mayor)/-2.
+    Variacion is (Menor + Mayor)*(-0.5).
 
 influencia(nuevosPuestosDeTrabajo(Cant),3):-
     Cant > 50000.
@@ -235,7 +235,7 @@ influencia(nuevosPuestosDeTrabajo(Cant),0):-
 
 influencia(construir(Lista),Variacion):-
     edilicio(Tipo,Cant),
-    findall(PorcPorConstru, obtenerPorcentaje(edilicio(Tipo, Cant),PorcPorConstru), Lista)
+    findall(PorcPorConstru, obtenerPorcentaje(edilicio(Tipo, Cant),PorcPorConstru), Lista),
     sumlist(Lista, Variacion).
 
 obtenerPorcentaje(edilicio(hospital, _), 2).
@@ -245,10 +245,10 @@ obtenerPorcentaje(edilicio(universidad, _), 0).
 obtenerPorcentaje(edilicio(comisaria, 200), 2).
 
 obtenerPorcentaje(edilicio(jardin, Cant),PorcPorConstru):-
-    obtenerJardinOEscuela (Cant, PorcPorConstru).
+    obtenerJardinOEscuela(Cant, PorcPorConstru).
 
 obtenerPorcentaje(edilicio(escuela, Cant),PorcPorConstru):-
-    obtenerJardinOEscuela (Cant, PorcPorConstru).
+    obtenerJardinOEscuela(Cant, PorcPorConstru).
 
 obtenerPorcentaje(edilicio(Algo, Cant), -1):-
     Algo \= hospital,
@@ -258,15 +258,15 @@ obtenerPorcentaje(edilicio(Algo, Cant), -1):-
     Algo \= comisaria.
 
 
-obtenerJardinOEscuela (Cant, PorcPorConstru):-
-    PorcPorConstru is Cant * 0,1.
+obtenerJardinOEscuela(Cant, PorcPorConstru):-
+    PorcPorConstru is Cant * 0.1.
 
 %punto 8
 promedioDeCrecimiento(Partido, Sumatoria):-
     findall(Variacion, promesaDePartido(Partido, Variacion), Lista),
     sumlist(Lista, Sumatoria).
 
-variacionDePromesasDePartido(Partido,Variacion),
+variacionDePromesasDePartido(Partido,Variacion):-
     promete(Partido,Promesa),
     influencia(Promesa,Variacion).
 

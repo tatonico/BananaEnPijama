@@ -1,5 +1,7 @@
 %%Base de conocimiento
 
+
+%Por las dudas la enie
 anio(2019).
 
 %candidato(nombre, partido)

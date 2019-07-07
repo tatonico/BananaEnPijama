@@ -222,6 +222,15 @@ promete(amarillo, inflacion(1,415)).
 promete(rojo, nuevosPuestosDeTrabajo(800000)).
 promete(rojo, inflacion(10,30)).
 
+esEdilicio(edilicio(hospital,_)).
+esEdilicio(edilicio(jardin,_)).
+esEdilicio(edilicio(universidad,_)).
+esEdilicio(edilicio(escuela,_)).
+esEdilicio(edilicio(comisaria, _)).
+
+edilicioPerteneceALista(Edilicio, Lista):-
+    member(Edilicio,Lista).
+
 %punto 7
 
 %influenciaDePromesas(Promesa,Variacion)
@@ -236,8 +245,8 @@ influencia(nuevosPuestosDeTrabajo(Cant),0):-
     Cant =< 50000.
 
 influencia(construir(Lista),Variacion):-
-    obtenerPorcentaje(edilicio(Tipo, Cant),_),
-    findall(PorcPorConstru, obtenerPorcentaje(edilicio(Tipo, Cant),PorcPorConstru), Lista),
+    promete(_, construir(Lista)),
+    findall(PorcPorConstru, (edilicioPerteneceALista(Edilicio, Lista),obtenerPorcentaje(Edilicio,PorcPorConstru)), Lista),
     sumlist(Lista, Variacion).
 
 obtenerPorcentaje(edilicio(hospital, _), 2).
@@ -253,12 +262,7 @@ obtenerPorcentaje(edilicio(escuela, Cant),PorcPorConstru):-
     obtenerJardinOEscuela(Cant, PorcPorConstru).
 
 obtenerPorcentaje(edilicio(Algo, _), -1):-
-    Algo \= hospital,
-    Algo \= universidad,
-    Algo \= escuela,
-    Algo \= jardin,
-    Algo \= comisaria.
-
+    not(esEdilicio(edilicio(Algo,_))).
 
 obtenerJardinOEscuela(Cant, PorcPorConstru):-
     PorcPorConstru is Cant * 0.1.

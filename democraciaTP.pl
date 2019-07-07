@@ -218,7 +218,7 @@ promete(azul, construir([edilicio(hospital,1000), edilicio(jardin,100), edilicio
 promete(azul, inflacion(2,4)).
 promete(amarillo, construir([edilicio(hospital,100), edilicio(universidad,1), edilicio(comisaria,200)])).
 promete(amarillo, nuevosPuestosDeTrabajo(10000)).
-promete(amarillo, inflacion(1,415)).
+promete(amarillo, inflacion(1,15)).
 promete(rojo, nuevosPuestosDeTrabajo(800000)).
 promete(rojo, inflacion(10,30)).
 
@@ -246,8 +246,12 @@ influencia(nuevosPuestosDeTrabajo(Cant),0):-
 
 influencia(construir(Lista),Variacion):-
     promete(_, construir(Lista)),
-    findall(PorcPorConstru, (edilicioPerteneceALista(Edilicio, Lista),obtenerPorcentaje(Edilicio,PorcPorConstru)), Lista),
-    sumlist(Lista, Variacion).
+    findall(PorcPorConstru, saberSiPerteneceYObtenerPorc(Edilicio, Lista, PorcPorConstru), Listda),
+    sumlist(Listda, Variacion).
+
+saberSiPerteneceYObtenerPorc(Edilicio, Lista, PorcPorConstru):-
+    edilicioPerteneceALista(Edilicio, Lista),
+    obtenerPorcentaje(Edilicio,PorcPorConstru).
 
 obtenerPorcentaje(edilicio(hospital, _), 2).
 
@@ -269,6 +273,7 @@ obtenerJardinOEscuela(Cant, PorcPorConstru):-
 
 %punto 8
 promedioDeCrecimiento(Partido, Sumatoria):-
+    promete(Partido, _),
     findall(Variacion, variacionDePromesasDePartido(Partido, Variacion), Lista),
     sumlist(Lista, Sumatoria).
 
